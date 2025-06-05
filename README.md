@@ -127,7 +127,7 @@ Follow these steps to build and run the project using Docker:
 3. **Run the Docker Container**
   Start the Docker container with a local volume for the database. For example:
       ```bash
-      docker run -d -p 80:80 -v /path/to/local/database:/database <image-name>
+      docker run -d -p 80:8080 -v /path/to/local/database:/database <image-name>
       ```
 Replace `/path/to/local/database` with the path to your local database directory and `<image-name>` with the name of your Docker image.
 
@@ -138,13 +138,13 @@ services:
   web:
     image: <image-name>
     ports:
-      - "80:80"
+      - "80:8080"
     volumes:
       - /path/to/local/database:/database
 ```
 Save this as `docker-compose.yml` and run:
 ```bash
-docker-compose up -d
+sudo docker-compose up -d
 ```
 ### Notes
 - Ensure the local database directory (`/path/to/local/database`) exists and has the correct permissions.
