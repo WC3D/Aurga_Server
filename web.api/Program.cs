@@ -54,8 +54,7 @@ using (var scope = app.Services.CreateScope())
     }
     catch (Exception ex)
     {
-        var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "An error occurred creating the DB.");
+        services.GetRequiredService<ILogger<Program>>()?.LogError(ex, "An error occurred creating the DB.");
     }
 }
 #endif
@@ -71,7 +70,8 @@ app.UseHttpsRedirection();
 app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseRouting();
-
+var logger = app.Services.GetRequiredService<ILogger<Program>>();
+logger.LogInformation("Start");
 #endregion
 
 #region Web app start

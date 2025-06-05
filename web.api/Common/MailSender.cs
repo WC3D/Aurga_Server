@@ -46,13 +46,15 @@ namespace aurga.Common
         private MailSender()
         {
             smtp = new MailKit.Net.Smtp.SmtpClient();
-        }
+            smtp.ServerCertificateValidationCallback = (s, c, h, e) => true; // Accept all certificates
+		}
 
         private bool ConnectSmtpServer()
         {
             try
             {
                 smtp.Connect(this.EmailServer, 587, MailKit.Security.SecureSocketOptions.StartTls);
+				smtp.CheckCertificateRevocation = false;
                 smtp.Authenticate(this.EmailAccount, this.EmailPassword);
             }
             catch (Exception ex)

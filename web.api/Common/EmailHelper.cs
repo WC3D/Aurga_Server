@@ -220,5 +220,30 @@ The AURGA Team";
 
             MailSender.DefaultSender.SendMail(msg);
         }
+
+        public static void SendApprovalEmailToOwner(string ownerName, string ownerEmail, string userName, string userEmail)
+        {
+            var msg = new MailItem();
+            msg.Subject = "AURGA Invitation Accepted - Approval Required";
+            msg.CampaignId = -1;
+            msg.Address = ownerEmail;
+            msg.Message = $@"Hey {ownerName},
+
+{userName} ({userEmail}) has accepted your invitation to join your team on AURGA.
+
+To approve this invitation, please follow these steps:
+
+1. Sign in to your AURGA account using the link below:
+{SharedStore.WEBSITE_URL}
+
+2. Once signed in, go to your Account Page to view the accepted invitation and approve it.
+
+If you did not expect this invitation or do not wish to approve it, you can safely ignore this email.
+
+Warm regards,
+The AURGA Team";
+
+            MailSender.DefaultSender.SendMail(msg);
+        }
     }
 }

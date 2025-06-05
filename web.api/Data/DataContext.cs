@@ -19,8 +19,15 @@ namespace aurga.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite(_configuration.GetConnectionString("DefaultConnection"))
-            .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()));
+            .LogTo(Console.WriteLine, LogLevel.Warning)
+            .EnableSensitiveDataLogging(false);
 
+		/*
+         options.UseSqlite(_configuration.GetConnectionString("DefaultConnection"))
+			.LogTo(Console.WriteLine, LogLevel.Warning) 
+		   .EnableSensitiveDataLogging(false);
+         */
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             Console.WriteLine("OnModelCreating");

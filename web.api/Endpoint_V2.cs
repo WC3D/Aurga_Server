@@ -1393,9 +1393,9 @@ namespace aurga
                     }
 
 					// Get parent account information
-                    var user = await ctx.Users.FirstOrDefaultAsync(o => o.UserId == invitation.InvitedBy);
+                    var owner = await ctx.Users.FirstOrDefaultAsync(o => o.UserId == invitation.InvitedBy);
 
-                    if (user == null) return Results.Json(new { status = RC.ACCOUNT_NOT_EXISTS });
+                    if (owner == null) return Results.Json(new { status = RC.ACCOUNT_NOT_EXISTS });
 
                     if (invitation == null)
                     {
@@ -1428,6 +1428,7 @@ namespace aurga
 
                     await ctx.SaveChangesAsync();
 
+                    EmailHelper.SendApprovalEmailToOwner(owner.Name, owner.Email, invitation.Name, invitation.Email);
                     return Results.Json(new { status = RC.SUCCESS });
                 }
                 catch (Exception ex)
