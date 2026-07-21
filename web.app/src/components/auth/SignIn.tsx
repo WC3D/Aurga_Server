@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Eye, EyeOff } from 'lucide-react'
 import toast from 'react-hot-toast'
-import { MD5 } from 'crypto-js'
+import { MD5, PBKDF2 } from 'crypto-js'
 import { config } from '../../utils/config'
 import { getServerUrl, isValidEmail } from '../../utils/utils'
 
@@ -29,8 +29,12 @@ export function SignIn() {
     }
 
     try {
-      const emailHash = MD5(email.trim().toLowerCase()).toString();
-      const passwordHash = MD5(password).toString();
+      const normalizedEmail = email.trim().toLowerCase();
+      const emailHash = MD5(normalizedEmail).toString();
+      const passwordHash = PBKDF2(password, normalizedEmail, {
+        keySize: 256 / 32,
+        iterations: 100000,
+      }).toString();
 
       let url = serverUrl + '/api/v2/signin';
       const response = await fetch(url,
